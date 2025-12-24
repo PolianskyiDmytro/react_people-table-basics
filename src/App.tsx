@@ -7,7 +7,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App = () => (
   <Routes>
-    <Route path="/*" element={<NavBar />}>
+    <Route path="/" element={<NavBar />}>
       <Route index element={<HomePage />} />
       <Route path="home" element={<Navigate to=".." replace />} />
       <Route path="people">
