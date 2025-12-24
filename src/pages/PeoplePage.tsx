@@ -12,31 +12,34 @@ export const PeoplePage = () => {
   useEffect(() => {
     setErrorMessage('');
     setIsLoading(true);
+    setTimeout(
+      () =>
+        client
+          .get('/people.json')
+          .then(fetchedPeople => {
+            if (fetchedPeople.length > 0) {
+              for (const person of fetchedPeople) {
+                person.mother =
+                  fetchedPeople.find(
+                    (mother: Person) => mother.name === person.motherName,
+                  ) || null;
+                person.father =
+                  fetchedPeople.find(
+                    (father: Person) => father.name === person.fatherName,
+                  ) || null;
+              }
+            }
 
-    client
-      .get('/people.json')
-      .then(fetchedPeople => {
-        if (fetchedPeople.length > 0) {
-          for (const person of fetchedPeople) {
-            person.mother =
-              fetchedPeople.find(
-                (mother: Person) => mother.name === person.motherName,
-              ) || null;
-            person.father =
-              fetchedPeople.find(
-                (father: Person) => father.name === person.fatherName,
-              ) || null;
-          }
-        }
-
-        setPeople(fetchedPeople || []);
-      })
-      .catch(() => {
-        setErrorMessage('Something went wrong');
-      })
-      .finally(() => {
-        setTimeout(() => setIsLoading(false), 1000);
-      });
+            setPeople(fetchedPeople || []);
+          })
+          .catch(() => {
+            setErrorMessage('Something went wrong');
+          })
+          .finally(() => {
+            setIsLoading(false);
+          }),
+      500,
+    );
   }, []);
 
   return (
