@@ -34,7 +34,7 @@ export const PeoplePage = () => {
 
         setPeople(fetchedPeople || []);
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage('Something went wrong');
       })
       .finally(() => {
